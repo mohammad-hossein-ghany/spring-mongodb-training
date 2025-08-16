@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: vasl-project
+
+  #VASL db
+  #  data:
+  #    mongodb:
+  #      host: ${MONGO_DB_HOST:stage.my.gov.ir}
+  #      port: ${MONGO_DB_PORT:2580}
+  #      database: ${MONGO_DB_NAME:Samp_V3}
+  #      username: ${MONGO_DB_USER:samp}
+  #      password: ${MONGO_DB_PASS:wpoS5U1ECVQf}
+
+
+  #Local db
+  #  data:
+  #    mongodb:
+  #      host: localhost
+  #      database: myDb
+  #      port: 27017
+
+
+
+  #Local db
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: myDb
+
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+#
+#springdoc:
+#  swagger-ui:
+#    path: /swagger-ui.html
+#  api-docs:
+#    path: /api-docs

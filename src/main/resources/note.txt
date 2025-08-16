@@ -1,0 +1,16 @@
+//region Sample API
+    @GetMapping(path = "/by-name/{name}")
+    public Api getByName(@PathVariable String name){
+        return apiRepository.findByName(name).orElseThrow(() -> new RuntimeException("API Not Found"));
+    }
+
+    @GetMapping(path = "/by-name")
+    public Api getByName2(@RequestParam String name){
+        return apiRepository.findByName(name).orElseThrow(() -> new RuntimeException("API Not Found"));
+    }
+//endregion
+
+/*
+هر چیزی که final باشه براش constructor میسازه
+@RequiredArgsConstructor
+*/
