@@ -6,12 +6,15 @@ import com.vasl.samp.dal.entity.ApiEndpoint;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ApiEndpointMapper {
     ApiEndpointOutputDto toDto(ApiEndpoint entity);
 
     ApiEndpoint toEntity(ApiEndpointInputDto dto);
 
-    void updateEntityFromDTO(ApiEndpointInputDto dto, @MappingTarget ApiEndpoint entity);
+    void updateEntityFromDto(ApiEndpointInputDto dto, @MappingTarget ApiEndpoint entity);
 
+    List<ApiEndpointOutputDto> toDtoList(List<ApiEndpoint> entities);
 }

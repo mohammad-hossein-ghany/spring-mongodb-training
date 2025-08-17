@@ -11,7 +11,6 @@ import java.util.List;
 
 
 @Data
-@Document
 public class ApiOutputDto {
     //BaseEntity
     @Id

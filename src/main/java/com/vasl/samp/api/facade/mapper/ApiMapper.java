@@ -4,6 +4,7 @@ import com.vasl.samp.api.dto.ApiInputDto;
 import com.vasl.samp.api.dto.ApiOutputDto;
 import com.vasl.samp.dal.entity.Api;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {ApiEndpointMapper.class})
 public interface ApiMapper {
@@ -11,4 +12,5 @@ public interface ApiMapper {
 
     Api toEntity(ApiInputDto dto);
 
+    void updateEntityFromDto(ApiInputDto dto, @MappingTarget Api entity);
 }

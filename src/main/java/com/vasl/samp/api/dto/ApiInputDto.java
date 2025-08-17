@@ -11,7 +11,6 @@ import java.util.List;
 
 
 @Data
-@Document
 public class ApiInputDto {
     //Api
     private String name;
