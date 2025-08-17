@@ -55,15 +55,27 @@ public class ApiService {
         return _apiMapper.toDto(entity);
     }
 
-    public void deleteById(String id) {
+    public List<ApiOutputDto> deleteById(String id) {
+
+        _apiRepository.findById(id)
+                .ifPresentOrElse(
+                        e -> {
+                            _apiRepository.delete(e);
+                        },
+                        () -> {
+                            throw new RuntimeException("entity not found");
+                        }
+                );
+
+        return _apiMapper.toDtoList(_apiRepository.findAll());
+
+           /*
         if (_apiRepository.existsById(id))
             _apiRepository.deleteById(id);
         else
             throw new RuntimeException("entity not found");
-/*
-        Api entity = _repository.findById(id).orElseThrow(() -> new RuntimeException("entity not found"));
-        _repository.save(entity);
-*/
+        */
+
     }
 
 
@@ -78,8 +90,8 @@ public class ApiService {
 
         List<ApiEndpoint> endpoints = apiEntity.getEndpoints();
         endpoints.stream()
-                .filter(e -> e.getName().equals(dto.getName())).
-                findFirst()
+                .filter(e -> e.getName().equals(dto.getName()))
+                .findFirst()
                 .ifPresentOrElse(
                         e -> {
                             throw new RuntimeException(e.getName() + " endpoint already exists");
@@ -137,8 +149,8 @@ public class ApiService {
 
         List<ApiEndpoint> endpoints = apiEntity.getEndpoints();
         endpoints.stream()
-                .filter(e -> e.getName().equals(dto.getName())).
-                findFirst()
+                .filter(e -> e.getName().equals(dto.getName()))
+                .findFirst()
                 .ifPresentOrElse(
                         e -> BeanUtils.copyProperties(dto, e),
                         () -> endpoints.add(_apiEndpointMapper.toEntity(dto)));
@@ -154,14 +166,13 @@ public class ApiService {
 
         boolean removed = apiEntity.getEndpoints().removeIf(e -> e.getId().equals(endpointId));
 
-        if(!removed){
+        if (!removed) {
             throw new RuntimeException(endpointId + " endpoint not found");
         }
 
         apiEntity = _apiRepository.save(apiEntity);
         return _apiEndpointMapper.toDtoList(apiEntity.getEndpoints());
     }
-
 
 
 }
