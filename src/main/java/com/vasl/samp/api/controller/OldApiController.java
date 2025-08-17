@@ -16,7 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/apim")
 @RestController
-public class CommentedApiController {
+public class OldApiController {
+
 
     private final ApiRepository apiRepository;
 //    private final CustomApiRepository customApiRepository;
@@ -118,7 +119,7 @@ public class CommentedApiController {
         Api api = apiRepository.findById(id).orElseThrow(() -> new RuntimeException("API Not Found"));
 
 
-        if(api.getEndpoints() == null) {
+        if (api.getEndpoints() == null) {
             api.setEndpoints(new ArrayList<>());
         }
 
@@ -185,8 +186,6 @@ public class CommentedApiController {
         return null;
     }
 */
-
-
 
 
 }

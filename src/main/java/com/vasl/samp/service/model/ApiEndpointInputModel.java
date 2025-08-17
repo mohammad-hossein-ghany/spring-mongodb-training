@@ -1,4 +1,4 @@
-package com.vasl.samp.api.dto;
+package com.vasl.samp.service.model;
 
 import com.vasl.samp.dal.entity.ApiEndpointMethod;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @ToString
-public class ApiEndpointInputDto {
+public class ApiEndpointInputModel {
 
     private String id;
     private String name;
