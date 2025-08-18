@@ -67,7 +67,7 @@ public class ApiServiceImpl implements ApiService {
                         }
                 );
 
-        return apiMapper.toDtoList(apiRepository.findAll());
+        return apiMapper.toDto(apiRepository.findAll());
 
            /*
         if (_apiRepository.existsById(id))
@@ -79,7 +79,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
 
-    //EndpoinServices
+    //EndpointServices
 
     public List<ApiEndpointOutputDto> insertEndpoint(String apiId, ApiEndpointInputModel apiEndpointInputModel) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
@@ -103,13 +103,13 @@ public class ApiServiceImpl implements ApiService {
                         });
 
         apiEntity = apiRepository.save(apiEntity);
-        return _apiEndpointMapper.toDtoList(apiEntity.getEndpoints());
+        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
     }
 
 
     public List<ApiEndpointOutputDto> getAllEndpoints(String ApiId) {
         Api apiEntity = apiRepository.findById(ApiId).orElseThrow(() -> new RuntimeException("entity not found"));
-        return _apiEndpointMapper.toDtoList(apiEntity.getEndpoints());
+        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
     }
 
 
@@ -140,7 +140,7 @@ public class ApiServiceImpl implements ApiService {
 
         apiEntity = apiRepository.save(apiEntity);
 
-        return _apiEndpointMapper.toDtoList(apiEntity.getEndpoints());
+        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
 
     }
 
@@ -160,7 +160,7 @@ public class ApiServiceImpl implements ApiService {
                         () -> endpoints.add(_apiEndpointMapper.toEntity(dto)));
 
         apiEntity = apiRepository.save(apiEntity);
-        return _apiEndpointMapper.toDtoList(apiEntity.getEndpoints());
+        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
     }
 
     //delete ?
@@ -175,7 +175,7 @@ public class ApiServiceImpl implements ApiService {
         }
 
         apiEntity = apiRepository.save(apiEntity);
-        return _apiEndpointMapper.toDtoList(apiEntity.getEndpoints());
+        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
     }
 
 

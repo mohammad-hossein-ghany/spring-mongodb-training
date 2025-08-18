@@ -20,8 +20,31 @@ public class ApiFacade {
     private final ApiService apiService;
     private final ApiEndpointMapper apiEndpointMapper;
 
-    public List<ApiEndpointOutputDto> insertEndpoint(String apiId, @RequestBody ApiEndpointInputDto dto) {
+
+    public List<ApiEndpointOutputDto> insertEndpoint(String apiId, ApiEndpointInputDto dto) {
         ApiEndpointInputModel apiEndpointInputModel = apiEndpointMapper.toModel(dto);
         return apiService.insertEndpoint(apiId, apiEndpointInputModel);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
