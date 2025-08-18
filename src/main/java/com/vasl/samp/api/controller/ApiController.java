@@ -3,7 +3,7 @@ package com.vasl.samp.api.controller;
 
 import com.vasl.samp.api.dto.ApiEndpointInputDto;
 import com.vasl.samp.api.dto.ApiEndpointOutputDto;
-import com.vasl.samp.api.dto.ApiInputDto;
+import com.vasl.samp.api.dto.ApiInputModel;
 import com.vasl.samp.api.dto.ApiOutputDto;
 import com.vasl.samp.api.facade.ApiFacade;
 import com.vasl.samp.service.ApiServiceImpl;
@@ -30,12 +30,12 @@ public class ApiController {
     }
 
     @PostMapping("/api/create")
-    public ApiOutputDto createApi(@RequestBody ApiInputDto apiInputDto) {
+    public ApiOutputDto createApi(@RequestBody ApiInputModel apiInputDto) {
         return _apiServiceImpl.create(apiInputDto);
     }
 
     @PutMapping("/api/update/{id}")
-    public ApiOutputDto updateApi(@RequestBody ApiInputDto apiInputDto, @PathVariable String id) {
+    public ApiOutputDto updateApi(@RequestBody ApiInputModel apiInputDto, @PathVariable String id) {
         return _apiServiceImpl.update(id, apiInputDto);
     }
 

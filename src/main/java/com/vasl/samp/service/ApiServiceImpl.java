@@ -2,7 +2,7 @@ package com.vasl.samp.service;
 
 import com.vasl.samp.api.dto.ApiEndpointInputDto;
 import com.vasl.samp.api.dto.ApiEndpointOutputDto;
-import com.vasl.samp.api.dto.ApiInputDto;
+import com.vasl.samp.api.dto.ApiInputModel;
 import com.vasl.samp.api.dto.ApiOutputDto;
 import com.vasl.samp.api.facade.mapper.ApiEndpointMapper;
 import com.vasl.samp.api.facade.mapper.ApiMapper;
@@ -27,11 +27,14 @@ public class ApiServiceImpl implements ApiService {
     private final ApiMapper apiMapper;
 
     //ApiEndpoint tools
-    private final ApiEndpointRepository _apiEndpointRepository;
-    private final ApiEndpointMapper _apiEndpointMapper;
+    private final ApiEndpointRepository apiEndpointRepository;
+    private final ApiEndpointMapper apiEndpointMapper;
 
-    public ApiOutputDto create(ApiInputDto dto) {
-        Api entity = apiMapper.toEntity(dto);
+
+    /*---------------------------------------->>[ApiServices]<<----------------------------------------*/
+
+    public ApiOutputDto create(ApiInputModel model) {
+        Api entity = apiMapper.toEntity(model);
         entity = apiRepository.save(entity);
         return apiMapper.toDto(entity);
     }
@@ -48,9 +51,9 @@ public class ApiServiceImpl implements ApiService {
         return apiMapper.toDto(entity);
     }
 
-    public ApiOutputDto update(String id, ApiInputDto dto) {
+    public ApiOutputDto update(String id, ApiInputModel model) {
         Api entity = apiRepository.findById(id).orElseThrow(() -> new RuntimeException("entity not found"));
-        apiMapper.updateEntityFromDto(dto, entity);
+        apiMapper.updateEntityFromDto(model, entity);
         entity = apiRepository.save(entity);
         return apiMapper.toDto(entity);
     }
@@ -59,9 +62,7 @@ public class ApiServiceImpl implements ApiService {
 
         apiRepository.findById(id)
                 .ifPresentOrElse(
-                        e -> {
-                            apiRepository.delete(e);
-                        },
+                        apiRepository::delete,
                         () -> {
                             throw new RuntimeException("entity not found");
                         }
@@ -79,7 +80,8 @@ public class ApiServiceImpl implements ApiService {
     }
 
 
-    //EndpointServices
+
+    /*---------------------------------------->>[EndpointServices]<<----------------------------------------*/
 
     public List<ApiEndpointOutputDto> insertEndpoint(String apiId, ApiEndpointInputModel apiEndpointInputModel) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
@@ -97,19 +99,19 @@ public class ApiServiceImpl implements ApiService {
                             throw new RuntimeException(e.getName() + " endpoint already exists");
                         },
                         () -> {
-                            ApiEndpoint apiEndpoint = _apiEndpointMapper.toEntity(apiEndpointInputModel);
+                            ApiEndpoint apiEndpoint = apiEndpointMapper.toEntity(apiEndpointInputModel);
                             apiEndpoint.setId(UUID.randomUUID().toString().replace("-", ""));
                             endpoints.add(apiEndpoint);
                         });
 
         apiEntity = apiRepository.save(apiEntity);
-        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
+        return apiEndpointMapper.toDto(apiEntity.getEndpoints());
     }
 
 
     public List<ApiEndpointOutputDto> getAllEndpoints(String ApiId) {
         Api apiEntity = apiRepository.findById(ApiId).orElseThrow(() -> new RuntimeException("entity not found"));
-        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
+        return apiEndpointMapper.toDto(apiEntity.getEndpoints());
     }
 
 
@@ -122,17 +124,17 @@ public class ApiServiceImpl implements ApiService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("endpoint not found"));
 
-        return _apiEndpointMapper.toDto(endpoint);
+        return apiEndpointMapper.toDto(endpoint);
     }
 
 
-    public List<ApiEndpointOutputDto> updateEndpoint(String apiId, String endpointId, ApiEndpointInputDto endpointDto) {
+    public List<ApiEndpointOutputDto> updateEndpoint(String apiId, String endpointId, ApiEndpointInputModel model) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
-        ApiEndpoint apiEndpointEntity = _apiEndpointRepository.findById(endpointId).orElseThrow(() -> new RuntimeException("endpoint not found"));
+        ApiEndpoint apiEndpointEntity = apiEndpointRepository.findById(endpointId).orElseThrow(() -> new RuntimeException("endpoint not found"));
 
         List<ApiEndpoint> endpoints = apiEntity.getEndpoints();
         endpoints.stream().filter(e -> e.getId().equals(endpointId)).findFirst().ifPresentOrElse(
-                e -> _apiEndpointMapper.updateEntityFromDto(endpointDto, e),
+                e -> apiEndpointMapper.updateEntity(model, e),
                 () -> {
                     throw new RuntimeException(endpointId + " endpoint not found");
                 }
@@ -140,11 +142,11 @@ public class ApiServiceImpl implements ApiService {
 
         apiEntity = apiRepository.save(apiEntity);
 
-        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
+        return apiEndpointMapper.toDto(apiEntity.getEndpoints());
 
     }
 
-    public List<ApiEndpointOutputDto> upsertEndpoint(String apiId, ApiEndpointInputDto dto) {
+    public List<ApiEndpointOutputDto> upsertEndpoint(String apiId, ApiEndpointInputModel model) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
 
         if (apiEntity.getEndpoints() == null) {
@@ -153,14 +155,14 @@ public class ApiServiceImpl implements ApiService {
 
         List<ApiEndpoint> endpoints = apiEntity.getEndpoints();
         endpoints.stream()
-                .filter(e -> e.getName().equals(dto.getName()))
+                .filter(e -> e.getName().equals(model.getName()))
                 .findFirst()
                 .ifPresentOrElse(
-                        e -> BeanUtils.copyProperties(dto, e),
-                        () -> endpoints.add(_apiEndpointMapper.toEntity(dto)));
+                        e -> BeanUtils.copyProperties(model, e),
+                        () -> endpoints.add(apiEndpointMapper.toEntity(model)));
 
         apiEntity = apiRepository.save(apiEntity);
-        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
+        return apiEndpointMapper.toDto(apiEntity.getEndpoints());
     }
 
     //delete ?
@@ -175,7 +177,7 @@ public class ApiServiceImpl implements ApiService {
         }
 
         apiEntity = apiRepository.save(apiEntity);
-        return _apiEndpointMapper.toDto(apiEntity.getEndpoints());
+        return apiEndpointMapper.toDto(apiEntity.getEndpoints());
     }
 
 

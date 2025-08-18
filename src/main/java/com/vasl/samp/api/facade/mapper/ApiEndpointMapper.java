@@ -31,7 +31,7 @@ public interface ApiEndpointMapper {
 
 
     //update
-    void updateEntityFromDto(ApiEndpointInputDto dto, @MappingTarget ApiEndpoint entity);
+    void updateEntity(ApiEndpointInputModel model, @MappingTarget ApiEndpoint entity);
 
 
 }

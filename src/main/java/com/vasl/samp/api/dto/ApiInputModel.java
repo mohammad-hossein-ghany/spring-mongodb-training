@@ -5,13 +5,12 @@ import com.vasl.samp.dal.entity.ApiEndpoint;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 
 @Data
-public class ApiInputDto {
+public class ApiInputModel {
     //Api
     private String name;
     private String title;
