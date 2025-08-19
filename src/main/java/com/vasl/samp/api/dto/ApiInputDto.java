@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Data
-public class ApiInputModel {
+public class ApiInputDto {
     //Api
     private String name;
     private String title;

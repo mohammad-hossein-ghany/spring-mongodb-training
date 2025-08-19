@@ -21,6 +21,7 @@ public interface ApiEndpointMapper {
     //Output (ApiEndpoint -> ApiEndpointOutputModel -> ApiEndpointOutputDto)
     ApiEndpointOutputModel toModel(ApiEndpoint entity);
     ApiEndpointOutputDto  toDto(ApiEndpointOutputModel dto);
+    List<ApiEndpointOutputModel> toModel(List<ApiEndpoint> entity);
 
 
     //entity <-> dto

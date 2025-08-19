@@ -1,8 +1,9 @@
 package com.vasl.samp.api.facade.mapper;
 
-import com.vasl.samp.api.dto.ApiInputModel;
+import com.vasl.samp.service.model.ApiInputModel;
 import com.vasl.samp.api.dto.ApiOutputDto;
 import com.vasl.samp.dal.entity.Api;
+import com.vasl.samp.api.dto.ApiInputDto;
 import com.vasl.samp.service.model.ApiOutputModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -13,23 +14,24 @@ import java.util.List;
 public interface ApiMapper {
 
     //Input (ApiInputDto -> ApiInputModel -> Api)
-    com.vasl.samp.service.model.ApiInputModel toModel(ApiInputModel dto);
-    Api toEntity(com.vasl.samp.service.model.ApiInputModel inputModel);
+    ApiInputModel toModel(ApiInputDto dto);
+    Api toEntity(ApiInputModel inputModel);
 
 
     //Output (Api -> ApiOutputModel -> ApiOutputDto)
     ApiOutputModel toModel(Api entity);
-    ApiOutputDto toDto(ApiOutputModel dto);
+    ApiOutputDto toDto(ApiOutputModel model);
+    List<ApiOutputModel>  toModel(List<Api> entities);
 
 
     //entity <-> dto
     ApiOutputDto toDto(Api entity);
-    Api toEntity(ApiInputModel dto);
+    Api toEntity(ApiInputDto dto);
     List<ApiOutputDto> toDto(List<Api> entities);
     List<Api> toEntity(List<ApiInputModel> dtos);
 
 
     //update
-    void updateEntityFromDto(ApiInputModel dto, @MappingTarget Api entity);
+    void updateEntity(ApiInputModel model, @MappingTarget Api entity);
 
 }

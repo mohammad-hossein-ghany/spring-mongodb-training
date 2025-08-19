@@ -7,6 +7,7 @@ import com.vasl.samp.api.dto.ApiInputModel;
 import com.vasl.samp.api.dto.ApiOutputDto;
 import com.vasl.samp.api.facade.ApiFacade;
 import com.vasl.samp.service.ApiServiceImpl;
+import com.vasl.samp.service.model.ApiOutputModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class ApiController {
     }
 
     @PostMapping("/api/create")
-    public ApiOutputDto createApi(@RequestBody ApiInputModel apiInputDto) {
+    public ApiOutputModel createApi(@RequestBody ApiInputModel apiInputDto) {
         return _apiServiceImpl.create(apiInputDto);
     }
 
@@ -46,10 +47,10 @@ public class ApiController {
     }
 
 
-    @PostMapping("/endpoint/insert/{apiId}")
-    public List<ApiEndpointOutputDto> insertEndpoint(@PathVariable String apiId, @RequestBody ApiEndpointInputDto dto) {
-        return apiFacade.insertEndpoint(apiId, dto);
-    }
+//    @PostMapping("/endpoint/insert/{apiId}")
+//    public List<ApiEndpointOutputDto> insertEndpoint(@PathVariable String apiId, @RequestBody ApiEndpointInputDto dto) {
+//        return apiFacade.insertEndpoint(apiId, dto);
+//    }
 
 
     @GetMapping("/endpoint/get-all/{apiId}")
