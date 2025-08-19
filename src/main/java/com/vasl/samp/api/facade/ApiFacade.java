@@ -42,9 +42,9 @@ public class ApiFacade {
         return apiMapper.toDto(apiOutputModel);
     }
 
-    public ApiOutputDto updateApi(ApiInputDto apiInputDto,String id) {
+    public ApiOutputDto updateApi(ApiInputDto apiInputDto, String id) {
         ApiInputModel apiInputModel = apiMapper.toModel(apiInputDto);
-        ApiOutputModel apiOutputModel = apiService.update(id,apiInputModel);
+        ApiOutputModel apiOutputModel = apiService.update(id, apiInputModel);
         return apiMapper.toDto(apiOutputModel);
     }
 
@@ -67,12 +67,32 @@ public class ApiFacade {
         return apiEndpointMapper.modelToDto(apiEndpointOutputModels);
     }
 
-    public ApiEndpointOutputDto getEndpointById(String apiId,String endpointId) {
-        ApiEndpointOutputModel apiEndpointOutputModel = apiService.getEndpointById(apiId,endpointId);
+    public ApiEndpointOutputDto getEndpointById(String apiId, String endpointId) {
+        ApiEndpointOutputModel apiEndpointOutputModel = apiService.getEndpointById(apiId, endpointId);
         return apiEndpointMapper.toDto(apiEndpointOutputModel);
     }
 
-}
+
+
+    public List<ApiEndpointOutputDto> updateEndpoint(String apiId, String endpointId, ApiEndpointInputDto dto) {
+        ApiEndpointInputModel apiEndpointInputModel = apiEndpointMapper.toModel(dto);
+        List<ApiEndpointOutputModel> apiEndpointOutputModels = apiService.updateEndpoint(apiId, endpointId, apiEndpointInputModel);
+        return apiEndpointMapper.modelToDto(apiEndpointOutputModels);
+    }
+
+    public List<ApiEndpointOutputDto> upsertEndpoint(String apiId, ApiEndpointInputDto dto) {
+        ApiEndpointInputModel apiEndpointInputModel = apiEndpointMapper.toModel(dto);
+        List<ApiEndpointOutputModel>  apiEndpointOutputModels = apiService.upsertEndpoint(apiId, apiEndpointInputModel);
+        return apiEndpointMapper.modelToDto(apiEndpointOutputModels);
+    }
+
+    public List<ApiEndpointOutputDto> deleteEndpoint(String apiId, String endpointId) {
+        List<ApiEndpointOutputModel> apiEndpointOutputModels = apiService.deleteEndpoint(apiId, endpointId);
+        return apiEndpointMapper.modelToDto(apiEndpointOutputModels);
+    }
+
+
+    }
 
 
 

@@ -6,6 +6,7 @@ import com.vasl.samp.api.dto.ApiEndpointOutputDto;
 import com.vasl.samp.api.dto.ApiInputDto;
 import com.vasl.samp.api.dto.ApiOutputDto;
 import com.vasl.samp.api.facade.ApiFacade;
+import com.vasl.samp.service.model.ApiEndpointOutputModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,5 +61,41 @@ public class ApiController {
         return apiFacade.getEndpointById(apiId, endpointId);
     }
 
+    // delete upsert update
+
+    @PatchMapping("/endpoint/update/{apiId}/{endpointId}")
+    public List<ApiEndpointOutputDto> updateEndpoint(@PathVariable String apiId, @PathVariable String endpointId, @RequestBody ApiEndpointInputDto dto) {
+        return apiFacade.updateEndpoint(apiId, endpointId, dto);
+    }
+
+    @DeleteMapping("/endpoint/delete/{apiId}/{endpointId}")
+    public List<ApiEndpointOutputDto> deleteEndpoint(@PathVariable String apiId, @PathVariable String endpointId) {
+        return apiFacade.deleteEndpoint(apiId, endpointId);
+    }
+
+
+    @PostMapping("/endpoint/upsert/{apiId}")
+    public List<ApiEndpointOutputDto> upsertEndpoint(@PathVariable String apiId,@RequestBody ApiEndpointInputDto dto) {
+        return apiFacade.upsertEndpoint(apiId, dto);
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

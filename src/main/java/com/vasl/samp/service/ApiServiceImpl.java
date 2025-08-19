@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -119,7 +120,7 @@ public class ApiServiceImpl implements ApiService {
 
         List<ApiEndpoint> endpoints = apiEntity.getEndpoints();
         ApiEndpoint endpoint = endpoints.stream()
-                .filter(e -> e.getId().equals(apiEndpointId))
+                .filter(e -> apiEndpointId.equals(e.getId()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("endpoint not found"));
 
@@ -129,10 +130,10 @@ public class ApiServiceImpl implements ApiService {
 
     public List<ApiEndpointOutputModel> updateEndpoint(String apiId, String endpointId, ApiEndpointInputModel model) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
-        ApiEndpoint apiEndpointEntity = apiEndpointRepository.findById(endpointId).orElseThrow(() -> new RuntimeException("endpoint not found"));
+        // apiEndpointRepository.findById(endpointId).orElseThrow(() -> new RuntimeException("endpoint not found"));
 
         List<ApiEndpoint> endpoints = apiEntity.getEndpoints();
-        endpoints.stream().filter(e -> e.getId().equals(endpointId)).findFirst().ifPresentOrElse(
+        endpoints.stream().filter(e -> endpointId.equals(e.getId())).findFirst().ifPresentOrElse(
                 e -> apiEndpointMapper.updateEntity(model, e),
                 () -> {
                     throw new RuntimeException(endpointId + " endpoint not found");
@@ -154,11 +155,16 @@ public class ApiServiceImpl implements ApiService {
 
         List<ApiEndpoint> endpoints = apiEntity.getEndpoints();
         endpoints.stream()
-                .filter(e -> e.getName().equals(model.getName()))
+                .filter(e -> Objects.equals(model.getName() , e.getName()))
                 .findFirst()
                 .ifPresentOrElse(
-                        e -> BeanUtils.copyProperties(model, e),
-                        () -> endpoints.add(apiEndpointMapper.toEntity(model)));
+                        e -> apiEndpointMapper.updateEntity(model, e),
+                        () -> {
+                            ApiEndpoint apiEndpoint = apiEndpointMapper.toEntity(model);
+                            apiEndpoint.setId(UUID.randomUUID().toString().replace("-", ""));
+                            endpoints.add(apiEndpoint);
+                        });
+
 
         apiEntity = apiRepository.save(apiEntity);
         return apiEndpointMapper.toModel(apiEntity.getEndpoints());
@@ -169,7 +175,7 @@ public class ApiServiceImpl implements ApiService {
     public List<ApiEndpointOutputModel> deleteEndpoint(String apiId, String endpointId) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
 
-        boolean removed = apiEntity.getEndpoints().removeIf(e -> e.getId().equals(endpointId));
+        boolean removed = apiEntity.getEndpoints().removeIf(e -> endpointId.equals(e.getId()));
 
         if (!removed) {
             throw new RuntimeException(endpointId + " endpoint not found");

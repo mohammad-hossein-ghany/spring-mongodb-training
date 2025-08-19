@@ -6,6 +6,7 @@ import com.vasl.samp.dal.entity.ApiEndpoint;
 import com.vasl.samp.service.model.ApiEndpointInputModel;
 import com.vasl.samp.service.model.ApiEndpointOutputModel;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public interface ApiEndpointMapper {
 
 
     //update
+    @Mapping(target = "id", ignore = true)
     void updateEntity(ApiEndpointInputModel model, @MappingTarget ApiEndpoint entity);
 
 
