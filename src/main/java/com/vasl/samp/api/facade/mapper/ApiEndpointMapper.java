@@ -16,12 +16,14 @@ public interface ApiEndpointMapper {
     //Input (ApiEndpointInputDto -> ApiEndpointInputModel -> ApiEndpoint)
     ApiEndpointInputModel toModel(ApiEndpointInputDto dto);
     ApiEndpoint toEntity(ApiEndpointInputModel inputModel);
-
+    List<ApiEndpointInputModel> dtoToModel(List<ApiEndpointInputDto> dto);
+    List<ApiEndpoint> modelToEntity(List<ApiEndpointInputModel> inputModel);
 
     //Output (ApiEndpoint -> ApiEndpointOutputModel -> ApiEndpointOutputDto)
     ApiEndpointOutputModel toModel(ApiEndpoint entity);
     ApiEndpointOutputDto  toDto(ApiEndpointOutputModel dto);
     List<ApiEndpointOutputModel> toModel(List<ApiEndpoint> entity);
+    List<ApiEndpointOutputDto> modelToDto(List<ApiEndpointOutputModel> entity);
 
 
     //entity <-> dto

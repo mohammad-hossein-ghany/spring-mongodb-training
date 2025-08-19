@@ -13,10 +13,10 @@ import java.util.List;
 public interface ApiService {
 
     //ApiServices
-    ApiOutputModel create(ApiInputModel dto);
+    ApiOutputModel create(ApiInputModel model);
     public List<ApiOutputModel> getAll();
     public ApiOutputModel getById(String id);
-public ApiOutputModel update(String id, ApiInputModel dto);
+    public ApiOutputModel update(String id, ApiInputModel model);
     public List<ApiOutputModel> deleteById(String id);
 
 
@@ -24,8 +24,8 @@ public ApiOutputModel update(String id, ApiInputModel dto);
     List<ApiEndpointOutputModel> insertEndpoint(String apiId, ApiEndpointInputModel apiEndpointInputModel);
     public List<ApiEndpointOutputModel> getAllEndpoints(String ApiId);
     public ApiEndpointOutputModel getEndpointById(String ApiId, String apiEndpointId);
-    public List<ApiEndpointOutputModel> updateEndpoint(String apiId, String endpointId, ApiEndpointInputDto endpointDto);
-    public List<ApiEndpointOutputModel> upsertEndpoint(String apiId, ApiEndpointInputModel dto);
+    public List<ApiEndpointOutputModel> updateEndpoint(String apiId, String endpointId, ApiEndpointInputModel model);
+    public List<ApiEndpointOutputModel> upsertEndpoint(String apiId, ApiEndpointInputModel model);
     public List<ApiEndpointOutputModel> deleteEndpoint(String apiId, String endpointId);
 
 }

@@ -9,7 +9,6 @@ import com.vasl.samp.dal.repository.ApiEndpointRepository;
 import com.vasl.samp.dal.repository.ApiRepository;
 import com.vasl.samp.service.model.ApiEndpointInputModel;
 import com.vasl.samp.service.model.ApiEndpointOutputModel;
-import com.vasl.samp.service.model.ApiInputModel;
 import com.vasl.samp.service.model.ApiOutputModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -68,7 +67,7 @@ public class ApiServiceImpl implements ApiService {
                         }
                 );
 
-        return apiMapper.toModel(apiRepository.findAll());
+        return apiMapper.entityToModel(apiRepository.findAll());
 
            /*
         if (_apiRepository.existsById(id))

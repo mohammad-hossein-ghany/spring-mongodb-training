@@ -16,12 +16,16 @@ public interface ApiMapper {
     //Input (ApiInputDto -> ApiInputModel -> Api)
     ApiInputModel toModel(ApiInputDto dto);
     Api toEntity(ApiInputModel inputModel);
+    List<ApiInputModel> dtoToModel(List<ApiInputDto> dto);
+    List<Api> modelToEntity(List<ApiInputModel> inputModel);
 
 
     //Output (Api -> ApiOutputModel -> ApiOutputDto)
     ApiOutputModel toModel(Api entity);
     ApiOutputDto toDto(ApiOutputModel model);
-    List<ApiOutputModel>  toModel(List<Api> entities);
+    List<ApiOutputModel>  entityToModel(List<Api> entities);
+    List<ApiOutputDto>  modelToDto(List<ApiOutputModel> model);
+
 
 
     //entity <-> dto
