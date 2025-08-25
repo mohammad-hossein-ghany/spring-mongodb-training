@@ -1,15 +1,14 @@
 package com.vasl.samp.service;
 
-import com.vasl.samp.service.model.ApiInputModel;
+import com.vasl.samp.api.facade.mapper.ApiEndpointMethodMapper;
+import com.vasl.samp.dal.entity.ApiEndpointMethod;
+import com.vasl.samp.service.model.*;
 import com.vasl.samp.api.facade.mapper.ApiEndpointMapper;
 import com.vasl.samp.api.facade.mapper.ApiMapper;
 import com.vasl.samp.dal.entity.Api;
 import com.vasl.samp.dal.entity.ApiEndpoint;
 import com.vasl.samp.dal.repository.ApiEndpointRepository;
 import com.vasl.samp.dal.repository.ApiRepository;
-import com.vasl.samp.service.model.ApiEndpointInputModel;
-import com.vasl.samp.service.model.ApiEndpointOutputModel;
-import com.vasl.samp.service.model.ApiOutputModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -27,38 +26,41 @@ public class ApiServiceImpl implements ApiService {
     private final ApiMapper apiMapper;
 
     //ApiEndpoint tools
-    private final ApiEndpointRepository apiEndpointRepository;
     private final ApiEndpointMapper apiEndpointMapper;
 
+    //ApiEndpointMethod tools
+    private final ApiEndpointMethodMapper apiEndpointMethodMapper;
 
-    /*---------------------------------------->>[ApiServices]<<----------------------------------------*/
 
-    public ApiOutputModel create(ApiInputModel model) {
+
+    /*---------------------------------------->>[Api-Services]<<----------------------------------------*/
+
+    public ApiOutputModel createApi(ApiInputModel model) {
         Api entity = apiMapper.toEntity(model);
         entity = apiRepository.save(entity);
         return apiMapper.toModel(entity);
     }
 
-    public List<ApiOutputModel> getAll() {
+    public List<ApiOutputModel> getAllApi() {
         return apiRepository.findAll()
                 .stream()
                 .map(apiMapper::toModel)
                 .toList();
     }
 
-    public ApiOutputModel getById(String id) {
+    public ApiOutputModel getApiById(String id) {
         Api entity = apiRepository.findById(id).orElseThrow(() -> new RuntimeException("entity not found"));
         return apiMapper.toModel(entity);
     }
 
-    public ApiOutputModel update(String id, ApiInputModel model) {
+    public ApiOutputModel updateApi(String id, ApiInputModel model) {
         Api entity = apiRepository.findById(id).orElseThrow(() -> new RuntimeException("entity not found"));
         apiMapper.updateEntity(model, entity);
         entity = apiRepository.save(entity);
         return apiMapper.toModel(entity);
     }
 
-    public List<ApiOutputModel> deleteById(String id) {
+    public List<ApiOutputModel> deleteApiById(String id) {
 
         apiRepository.findById(id)
                 .ifPresentOrElse(
@@ -81,7 +83,7 @@ public class ApiServiceImpl implements ApiService {
 
 
 
-    /*---------------------------------------->>[EndpointServices]<<----------------------------------------*/
+    /*---------------------------------------->>[ApiEndpoint-Services]<<----------------------------------------*/
 
     public List<ApiEndpointOutputModel> insertEndpoint(String apiId, ApiEndpointInputModel apiEndpointInputModel) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
@@ -133,12 +135,15 @@ public class ApiServiceImpl implements ApiService {
         // apiEndpointRepository.findById(endpointId).orElseThrow(() -> new RuntimeException("endpoint not found"));
 
         List<ApiEndpoint> endpoints = apiEntity.getEndpoints();
-        endpoints.stream().filter(e -> endpointId.equals(e.getId())).findFirst().ifPresentOrElse(
-                e -> apiEndpointMapper.updateEntity(model, e),
-                () -> {
-                    throw new RuntimeException(endpointId + " endpoint not found");
-                }
-        );
+        endpoints.stream()
+                .filter(e -> endpointId.equals(e.getId()))
+                .findFirst()
+                .ifPresentOrElse(
+                        e -> apiEndpointMapper.updateEntity(model, e),
+                        () -> {
+                            throw new RuntimeException(endpointId + " endpoint not found");
+                        }
+                );
 
         apiEntity = apiRepository.save(apiEntity);
 
@@ -155,7 +160,7 @@ public class ApiServiceImpl implements ApiService {
 
         List<ApiEndpoint> endpoints = apiEntity.getEndpoints();
         endpoints.stream()
-                .filter(e -> Objects.equals(model.getName() , e.getName()))
+                .filter(e -> Objects.equals(model.getName(), e.getName()))
                 .findFirst()
                 .ifPresentOrElse(
                         e -> apiEndpointMapper.updateEntity(model, e),
@@ -183,6 +188,155 @@ public class ApiServiceImpl implements ApiService {
 
         apiEntity = apiRepository.save(apiEntity);
         return apiEndpointMapper.toModel(apiEntity.getEndpoints());
+    }
+
+    /*---------------------------------------->>[ApiEndpointMethod-Services]<<----------------------------------------*/
+
+    public List<ApiEndpointMethodOutputModel> insertEndpointMethod(String apiId, String apiEndpointId, ApiEndpointMethodInputModel apiEndpointInputModel) {
+        return List.of();
+    }
+
+    public List<ApiEndpointMethodOutputModel> getAllEndpointMethods(String apiId, String apiEndpointId) {
+//        Api apiEntity = apiRepository.findById(ApiId).orElseThrow(() -> new RuntimeException("entity not found"));
+
+        Api api = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
+
+        if (api.getEndpoints() == null) {
+            api.setEndpoints(new ArrayList<>());
+        }
+
+        ApiEndpoint apiEndpoint =
+                api.getEndpoints()
+                        .stream()
+                        .filter(e -> apiEndpointId.equals(e.getId()))
+                        .findFirst()
+                        .orElseThrow(
+                                () -> new RuntimeException(apiEndpointId + " endpoint not found")
+                        );
+
+        return apiEndpointMethodMapper.entityToModel(apiEndpoint.getMethods());
+
+    }
+
+    public ApiEndpointMethodOutputModel getEndpointMethodById(String apiId, String apiEndpointId, String apiEndpointMethodId) {
+
+
+        Api api = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
+
+        if (api.getEndpoints() == null) {
+            api.setEndpoints(new ArrayList<>());
+        }
+
+        ApiEndpoint apiEndpoint =
+                api.getEndpoints()
+                        .stream()
+                        .filter(e -> apiEndpointId.equals(e.getId()))
+                        .findFirst()
+                        .orElseThrow(
+                                () -> new RuntimeException(apiEndpointId + " endpoint not found")
+                        );
+
+        if (apiEndpoint.getMethods() == null) {
+            apiEndpoint.setMethods(new ArrayList<>());
+        }
+
+        ApiEndpointMethod apiEndpointMethod =
+                apiEndpoint.getMethods()
+                        .stream()
+                        .filter(e -> apiEndpointMethodId.equals(e.getId()))
+                        .findFirst()
+                        .orElseThrow(
+                                () -> new RuntimeException(apiEndpointMethodId + " endpoint method not found")
+                        );
+
+        return apiEndpointMethodMapper.toModel(apiEndpointMethod);
+    }
+
+    public List<ApiEndpointMethodOutputModel> updateEndpointMethod(String apiId, String apiEndpointId, String apiEndpointMethodId, ApiEndpointMethodInputModel model) {
+
+        Api api = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
+
+        if (api.getEndpoints() == null) {
+            throw new RuntimeException(apiEndpointId + " endpoint not found");
+        }
+
+        ApiEndpoint apiEndpoint =
+                api.getEndpoints()
+                        .stream()
+                        .filter(e -> apiEndpointId.equals(e.getId()))
+                        .findFirst()
+                        .orElseThrow(
+                                () -> new RuntimeException(apiEndpointId + " endpoint not found")
+                        );
+
+        if (apiEndpoint.getMethods() == null) {
+            throw new RuntimeException(apiEndpointMethodId + " endpoint method not found");
+        }
+
+
+        apiEndpoint.getMethods()
+                .stream()
+                .filter(e -> apiEndpointMethodId.equals(e.getId()))
+                .findFirst()
+                .ifPresentOrElse(
+                        e -> apiEndpointMethodMapper.updateEntity(model, e),
+                        () ->
+                        {
+                            throw new RuntimeException(apiEndpointMethodId + " endpoint method not found");
+                        }
+                );
+
+        apiRepository.save(api);
+
+        return getAllEndpointMethods(apiId, apiEndpointId);
+    }
+
+    public List<ApiEndpointMethodOutputModel> upsertEndpointMethod(String apiId, String apiEndpointId, ApiEndpointInputModel model) {
+        return List.of();
+    }
+
+    public List<ApiEndpointMethodOutputModel> deleteEndpointMethod(String apiId, String apiEndpointId, String apiEndpointMethodId) {
+
+        Api api = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
+
+        if (api.getEndpoints() == null) {
+            throw new RuntimeException(apiEndpointId + " endpoint not found");
+        }
+
+        ApiEndpoint apiEndpoint =
+                api.getEndpoints()
+                        .stream()
+                        .filter(e -> apiEndpointId.equals(e.getId()))
+                        .findFirst()
+                        .orElseThrow(
+                                () -> new RuntimeException(apiEndpointId + " endpoint not found")
+                        );
+
+        if (apiEndpoint.getMethods() == null) {
+            throw new RuntimeException(apiEndpointMethodId + " endpoint method not found");
+        }
+
+
+//        apiEndpoint.getMethods()
+//                .stream()
+//                .filter(e -> apiEndpointMethodId.equals(e.getId()))
+//                .findFirst()
+//                .ifPresentOrElse(
+//                        e -> apiendpointmethod,
+//                        () ->
+//                        {
+//                            throw new RuntimeException(apiEndpointMethodId + " endpoint method not found");
+//                        }
+//                );
+
+        boolean removed = apiEndpoint.getMethods().removeIf(e -> apiEndpointMethodId.equals(e.getId()));
+
+        if (!removed) {
+            throw new RuntimeException(" endpoint method not found");
+        }
+
+        api = apiRepository.save(api);
+        return getAllEndpointMethods(apiId, apiEndpointId);
     }
 
 

@@ -1,17 +1,12 @@
 package com.vasl.samp.api.facade;
 
 
-import com.vasl.samp.api.dto.ApiEndpointInputDto;
-import com.vasl.samp.api.dto.ApiEndpointOutputDto;
-import com.vasl.samp.api.dto.ApiInputDto;
-import com.vasl.samp.api.dto.ApiOutputDto;
+import com.vasl.samp.api.dto.*;
 import com.vasl.samp.api.facade.mapper.ApiEndpointMapper;
+import com.vasl.samp.api.facade.mapper.ApiEndpointMethodMapper;
 import com.vasl.samp.api.facade.mapper.ApiMapper;
 import com.vasl.samp.service.ApiService;
-import com.vasl.samp.service.model.ApiEndpointInputModel;
-import com.vasl.samp.service.model.ApiEndpointOutputModel;
-import com.vasl.samp.service.model.ApiInputModel;
-import com.vasl.samp.service.model.ApiOutputModel;
+import com.vasl.samp.service.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,36 +19,40 @@ public class ApiFacade {
     private final ApiService apiService;
     private final ApiEndpointMapper apiEndpointMapper;
     private final ApiMapper apiMapper;
+    private final ApiEndpointMethodMapper apiEndpointMethodMapper;
 
+    /*---------------------------------------->>[Api-Facade]<<----------------------------------------*/
 
     public List<ApiOutputDto> getAllApi() {
-        List<ApiOutputModel> apiOutputModels = apiService.getAll();
+        List<ApiOutputModel> apiOutputModels = apiService.getAllApi();
         return apiMapper.modelToDto(apiOutputModels);
     }
 
     public ApiOutputDto getApiById(String id) {
-        ApiOutputModel apiOutputModel = apiService.getById(id);
+        ApiOutputModel apiOutputModel = apiService.getApiById(id);
         return apiMapper.toDto(apiOutputModel);
     }
 
     public ApiOutputDto createApi(ApiInputDto apiInputDto) {
         ApiInputModel apiInputModel = apiMapper.toModel(apiInputDto);
-        ApiOutputModel apiOutputModel = apiService.create(apiInputModel);
+        ApiOutputModel apiOutputModel = apiService.createApi(apiInputModel);
         return apiMapper.toDto(apiOutputModel);
     }
 
     public ApiOutputDto updateApi(ApiInputDto apiInputDto, String id) {
         ApiInputModel apiInputModel = apiMapper.toModel(apiInputDto);
-        ApiOutputModel apiOutputModel = apiService.update(id, apiInputModel);
+        ApiOutputModel apiOutputModel = apiService.updateApi(id, apiInputModel);
         return apiMapper.toDto(apiOutputModel);
     }
 
 
     public List<ApiOutputDto> deleteApiById(String id) {
-        List<ApiOutputModel> apiOutputModels = apiService.deleteById(id);
+        List<ApiOutputModel> apiOutputModels = apiService.deleteApiById(id);
         return apiMapper.modelToDto(apiOutputModels);
     }
 
+
+    /*---------------------------------------->>[ApiEndpoint-Facade]<<----------------------------------------*/
 
     public List<ApiEndpointOutputDto> insertEndpoint(String apiId, ApiEndpointInputDto dto) {
         ApiEndpointInputModel apiEndpointInputModel = apiEndpointMapper.toModel(dto);
@@ -73,7 +72,6 @@ public class ApiFacade {
     }
 
 
-
     public List<ApiEndpointOutputDto> updateEndpoint(String apiId, String endpointId, ApiEndpointInputDto dto) {
         ApiEndpointInputModel apiEndpointInputModel = apiEndpointMapper.toModel(dto);
         List<ApiEndpointOutputModel> apiEndpointOutputModels = apiService.updateEndpoint(apiId, endpointId, apiEndpointInputModel);
@@ -82,7 +80,7 @@ public class ApiFacade {
 
     public List<ApiEndpointOutputDto> upsertEndpoint(String apiId, ApiEndpointInputDto dto) {
         ApiEndpointInputModel apiEndpointInputModel = apiEndpointMapper.toModel(dto);
-        List<ApiEndpointOutputModel>  apiEndpointOutputModels = apiService.upsertEndpoint(apiId, apiEndpointInputModel);
+        List<ApiEndpointOutputModel> apiEndpointOutputModels = apiService.upsertEndpoint(apiId, apiEndpointInputModel);
         return apiEndpointMapper.modelToDto(apiEndpointOutputModels);
     }
 
@@ -92,7 +90,34 @@ public class ApiFacade {
     }
 
 
+    /*---------------------------------------->>[ApiEndpointMethod-Facade]<<----------------------------------------*/
+
+    public List<ApiEndpointMethodOutputDto> insertEndpointMethod(String apiId, String apiEndpointId, ApiEndpointMethodInputDto apiEndpointInputDto) {
+        ApiEndpointMethodInputModel apiEndpointMethodInputModel = apiEndpointMethodMapper.toModel(apiEndpointInputDto);
+        List<ApiEndpointMethodOutputModel> apiEndpointMethodOutputModels = apiService.insertEndpointMethod(apiId, apiEndpointId, apiEndpointMethodInputModel);
+        return apiEndpointMethodMapper.modelToDto(apiEndpointMethodOutputModels);
     }
+
+    public List<ApiEndpointMethodOutputDto> getAllEndpointMethods(String ApiId, String apiEndpointId){
+        List<ApiEndpointMethodOutputModel> apiEndpointMethodOutputModels = apiService.getAllEndpointMethods(ApiId,apiEndpointId);
+        return apiEndpointMethodMapper.modelToDto(apiEndpointMethodOutputModels);
+    }
+
+    public ApiEndpointMethodOutputDto getEndpointMethodById(String ApiId, String apiEndpointId, String apiEndpointMethodId) {
+        ApiEndpointMethodOutputModel apiEndpointMethodOutputModel = apiService.getEndpointMethodById(ApiId, apiEndpointId, apiEndpointMethodId);
+        return apiEndpointMethodMapper.toDto(apiEndpointMethodOutputModel);
+    }
+//    public List<ApiEndpointMethodOutputModel> updateEndpointMethod(String apiId, String endpointId, String apiEndpointMethodId, ApiEndpointMethodInputModel model);
+//    public List<ApiEndpointMethodOutputModel> upsertEndpointMethod(String apiId, String apiEndpointId, ApiEndpointInputModel model);
+//    public List<ApiEndpointMethodOutputModel> deleteEndpointMethod(String apiId, String endpointId, String apiEndpointMethodId);
+
+
+}
+
+
+
+
+
 
 
 

@@ -15,11 +15,12 @@ import java.util.List;
 @ToString
 public class ApiEndpointOutputDto {
 
-    @Version
+
+//  @Version
     protected Long version;
-    @CreatedDate
+//  @CreatedDate
     protected Long createdDate;
-    @LastModifiedDate
+//  @LastModifiedDate
     protected Long lastModifiedDate;
 
 

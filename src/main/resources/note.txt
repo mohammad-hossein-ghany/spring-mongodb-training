@@ -14,3 +14,15 @@
 هر چیزی که final باشه براش constructor میسازه
 @RequiredArgsConstructor
 */
+
+
+//method sample
+               {
+                    "method" : "POST",
+                    "title" : "testMethod1",
+                    "description" : "",
+                    "disable" : false,
+                    "active" : true,
+                    "testStatus" : "NOT_TESTED",
+                    "published" : true
+               }

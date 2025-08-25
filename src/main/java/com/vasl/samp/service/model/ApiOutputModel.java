@@ -11,13 +11,13 @@ import java.util.List;
 @Data
 public class ApiOutputModel {
     //BaseEntity
-    @Id
+//    @Id
     private String id;
-    @Version
+//    @Version
     protected Long version;
-    @CreatedDate
+//    @CreatedDate
     protected Long createdDate;
-    @LastModifiedDate
+//    @LastModifiedDate
     protected Long lastModifiedDate;
 
 

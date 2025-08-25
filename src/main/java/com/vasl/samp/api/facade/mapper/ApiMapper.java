@@ -10,7 +10,7 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {ApiEndpointMapper.class})
+@Mapper(componentModel = "spring", uses = {ApiEndpointMapper.class , ApiEndpointMapper.class})
 public interface ApiMapper {
 
     //Input (ApiInputDto -> ApiInputModel -> Api)
