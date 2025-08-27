@@ -1,8 +1,13 @@
 package com.vasl.samp.api.facade.mapper;
 
+import com.vasl.samp.api.dto.ApiInputDto;
+import com.vasl.samp.api.dto.ApiOutputDto;
 import com.vasl.samp.api.dto.MonzPackageApiInputDto;
 import com.vasl.samp.api.dto.MonzPackageApiOutputDto;
+import com.vasl.samp.dal.entity.Api;
 import com.vasl.samp.dal.entity.MonzPackageApi;
+import com.vasl.samp.service.model.ApiInputModel;
+import com.vasl.samp.service.model.ApiOutputModel;
 import com.vasl.samp.service.model.MonzPackageApiInputModel;
 import com.vasl.samp.service.model.MonzPackageApiOutputModel;
 import org.mapstruct.Mapper;
@@ -12,6 +17,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface MonzPackageApiMapper {
+
     //Input (MonzPackageApiInputDto -> MonzPackageApiInputModel -> MonzPackageApi)
     MonzPackageApiInputModel toModel(MonzPackageApiInputDto dto);
     MonzPackageApi toEntity(MonzPackageApiInputModel inputModel);
@@ -36,5 +42,4 @@ public interface MonzPackageApiMapper {
 
     //update
     void updateEntity(MonzPackageApiInputModel model, @MappingTarget MonzPackageApi entity);
-
 }

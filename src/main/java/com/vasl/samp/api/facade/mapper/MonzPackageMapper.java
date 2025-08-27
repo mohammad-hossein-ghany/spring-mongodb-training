@@ -16,7 +16,7 @@ import org.mapstruct.MappingTarget;
 import java.util.List;
 
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {MonzPackageApiMapper.class , MonzPackagePlanMapper.class})
 public interface MonzPackageMapper {
     //Input (MonzPackageInputDto -> MonzPackageInputModel -> MonzPackage)
     MonzPackageInputModel toModel(MonzPackageInputDto dto);
