@@ -7,10 +7,8 @@ import com.vasl.samp.api.facade.mapper.ApiEndpointMapper;
 import com.vasl.samp.api.facade.mapper.ApiMapper;
 import com.vasl.samp.dal.entity.Api;
 import com.vasl.samp.dal.entity.ApiEndpoint;
-import com.vasl.samp.dal.repository.ApiEndpointRepository;
 import com.vasl.samp.dal.repository.ApiRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

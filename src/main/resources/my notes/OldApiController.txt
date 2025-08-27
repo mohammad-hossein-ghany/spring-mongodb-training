@@ -1,5 +1,3 @@
-package com.vasl.samp.api.controller;
-
 import com.vasl.samp.dal.entity.Api;
 import com.vasl.samp.dal.entity.ApiEndpoint;
 import com.vasl.samp.dal.repository.ApiRepository;
