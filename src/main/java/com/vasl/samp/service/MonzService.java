@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface MonzService {
     MonzPackageOutputModel createMonzPackage(MonzPackageInputModel model);
-
     List<MonzPackageApiOutputModel> addMonzPackageApi(String MonzPackageId, MonzPackageApiInputModel monzPackageApiInputModel);
-
     List<MonzPackagePlanOutputModel> addMonzPackagePlan(String monzPackageId, MonzPackagePlanInputModel monzPackagePlanInputModel);
 }

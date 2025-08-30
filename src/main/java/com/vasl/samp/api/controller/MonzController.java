@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/monotize")
+@RequestMapping("/api/monotize/package")
 @RestController
 public class MonzController {
     private final MonzFacade monzFacade;
@@ -26,7 +26,7 @@ public class MonzController {
 
     /*---------------------------------------->>[MonzPackageApi-Controller]<<----------------------------------------*/
 
-    @PostMapping("/packageapi/insert/{MonzPackageId}")
+    @PostMapping("/package-api/insert/{MonzPackageId}")
     public List<MonzPackageApiOutputDto> addMonzPackageApi(@PathVariable String MonzPackageId, @RequestBody MonzPackageApiInputDto monzPackageApiInputDto) {
         return monzFacade.addMonzPackageApi(MonzPackageId, monzPackageApiInputDto);
     }
@@ -34,7 +34,8 @@ public class MonzController {
 
     /*---------------------------------------->>[MonzPackageApi-Controller]<<----------------------------------------*/
 
-    public List<MonzPackagePlanOutputDto> addMonzPackagePlan(String monzPackageId, MonzPackagePlanInputDto monzPackagePlanInputDto) {
+    @PostMapping("/package-plan/insert/{monzPackageId}")
+    public List<MonzPackagePlanOutputDto> addMonzPackagePlan( @PathVariable String monzPackageId,@RequestBody MonzPackagePlanInputDto monzPackagePlanInputDto) {
         return monzFacade.addMonzPackagePlan(monzPackageId , monzPackagePlanInputDto);
     }
 
