@@ -55,8 +55,8 @@ public class MonzUserPackageServiceImpl implements MonzUserPackageService {
         monzUserPackageEntity.setUserId(userId);
         monzUserPackageEntity.setUsername(username);
         monzUserPackageEntity.setStartUsageTime(new Date().getTime());
-//      monzUserPackageEntity.setExpireTime(LocalDateTime.now().plusMonths(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-        monzUserPackageEntity.setExpireTime(Instant.now().plus(1, ChronoUnit.MONTHS).toEpochMilli());
+        monzUserPackageEntity.setExpireTime(LocalDateTime.now().plusMonths(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+//      monzUserPackageEntity.setExpireTime(Instant.now().plus(1, ChronoUnit.MONTHS).toEpochMilli());
         monzUserPackageEntity.setActive(true);
         monzUserPackageEntity.setDurationDays(monzPackagePlan.getDurationDays());
         monzUserPackageEntity.setExpired(false);

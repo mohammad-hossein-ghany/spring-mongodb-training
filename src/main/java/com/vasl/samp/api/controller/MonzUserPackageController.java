@@ -18,5 +18,4 @@ public class MonzUserPackageController {
         return monzUserPackageFacade.createMonzUserPackage(purchasedInputDto.getPackageId(), purchasedInputDto.getPlanId(), purchasedInputDto.getUsername(), purchasedInputDto.getUserId());
     }
 
-
 }
