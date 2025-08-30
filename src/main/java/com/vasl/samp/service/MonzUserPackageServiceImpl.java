@@ -7,6 +7,7 @@ import com.vasl.samp.dal.entity.MonzUserPackage;
 import com.vasl.samp.dal.repository.MonzRepository;
 import com.vasl.samp.dal.repository.MonzUserPackageRepository;
 import com.vasl.samp.service.model.MonzUserPackageOutputModel;
+import com.vasl.samp.service.model.PurchasedInputModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,9 @@ public class MonzUserPackageServiceImpl implements MonzUserPackageService {
     private final MonzUserPackageMapper monzUserPackageMapper;
 
     @Override
-    public MonzUserPackageOutputModel createMonzUserPackage(String packageId, String planId, String username, String userId) {
+    public MonzUserPackageOutputModel createMonzUserPackage(PurchasedInputModel purchasedInputModel) {
 
-        MonzPackage monzPackage = monzRepository.findById(packageId).orElseThrow(() -> new RuntimeException("Package not found"));
+        MonzPackage monzPackage = monzRepository.findById(purchasedInputModel.getPackageId()).orElseThrow(() -> new RuntimeException("Package not found"));
         String purchasedById = UUID.randomUUID().toString().replace("-", "");
 
         if (monzPackage.getPlans() == null) {
@@ -39,7 +40,7 @@ public class MonzUserPackageServiceImpl implements MonzUserPackageService {
         List<MonzPackagePlan> monzPackagePlans = monzPackage.getPlans();
 
         MonzPackagePlan monzPackagePlan = monzPackagePlans.stream()
-                .filter(plan -> plan.getId().equals(planId))
+                .filter(plan -> plan.getId().equals(purchasedInputModel.getPlanId()))
                 .findFirst()
                 .orElseThrow(
                         () -> new RuntimeException("Plan not found")
@@ -48,12 +49,12 @@ public class MonzUserPackageServiceImpl implements MonzUserPackageService {
 
         MonzUserPackage monzUserPackageEntity = new MonzUserPackage();
 
-        monzUserPackageEntity.setPackageId(packageId);
-        monzUserPackageEntity.setPlanId(planId);
+        monzUserPackageEntity.setPackageId(purchasedInputModel.getPackageId());
+        monzUserPackageEntity.setPlanId(purchasedInputModel.getPlanId());
         monzUserPackageEntity.setProviderId(monzPackage.getUserId());
         monzUserPackageEntity.setProviderUsername(monzPackagePlan.getName());
-        monzUserPackageEntity.setUserId(userId);
-        monzUserPackageEntity.setUsername(username);
+        monzUserPackageEntity.setUserId(purchasedInputModel.getUserId());
+        monzUserPackageEntity.setUsername(purchasedInputModel.getUsername());
         monzUserPackageEntity.setStartUsageTime(new Date().getTime());
         monzUserPackageEntity.setExpireTime(LocalDateTime.now().plusMonths(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 //      monzUserPackageEntity.setExpireTime(Instant.now().plus(1, ChronoUnit.MONTHS).toEpochMilli());

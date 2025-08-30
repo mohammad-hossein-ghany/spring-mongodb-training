@@ -14,6 +14,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface MonzPackagePlanMapper {
+
     //Input (MonzPackagePlanInputDto -> MonzPackagePlanInputModel -> MonzPackagePlan)
     MonzPackagePlanInputModel toModel(MonzPackagePlanInputDto dto);
     MonzPackagePlan toEntity(MonzPackagePlanInputModel inputModel);

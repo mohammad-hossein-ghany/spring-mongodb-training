@@ -3,7 +3,7 @@ package com.vasl.samp.api.dto;
 import lombok.Data;
 
 @Data
-public class purchasedInputDto {
+public class PurchasedInputDto {
     String packageId;
     String planId;
     String username;
