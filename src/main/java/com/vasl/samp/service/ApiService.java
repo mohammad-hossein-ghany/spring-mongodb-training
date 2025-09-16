@@ -1,6 +1,7 @@
 package com.vasl.samp.service;
 
 import com.vasl.samp.service.model.*;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 

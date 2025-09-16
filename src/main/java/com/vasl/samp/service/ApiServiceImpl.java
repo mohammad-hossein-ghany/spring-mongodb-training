@@ -2,6 +2,7 @@ package com.vasl.samp.service;
 
 import com.vasl.samp.api.facade.mapper.ApiEndpointMethodMapper;
 import com.vasl.samp.dal.entity.ApiEndpointMethod;
+import com.vasl.samp.dal.repository.MonzRepository;
 import com.vasl.samp.service.model.*;
 import com.vasl.samp.api.facade.mapper.ApiEndpointMapper;
 import com.vasl.samp.api.facade.mapper.ApiMapper;
@@ -9,6 +10,7 @@ import com.vasl.samp.dal.entity.Api;
 import com.vasl.samp.dal.entity.ApiEndpoint;
 import com.vasl.samp.dal.repository.ApiRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class ApiServiceImpl implements ApiService {
     //Api tools
     private final ApiRepository apiRepository;
     private final ApiMapper apiMapper;
+    private final MonzRepository monzRepository;
 
     //ApiEndpoint tools
     private final ApiEndpointMapper apiEndpointMapper;
@@ -30,15 +33,15 @@ public class ApiServiceImpl implements ApiService {
     private final ApiEndpointMethodMapper apiEndpointMethodMapper;
 
 
-
     /*---------------------------------------->>[Api-Services]<<----------------------------------------*/
-
+    @Override
     public ApiOutputModel createApi(ApiInputModel model) {
         Api entity = apiMapper.toEntity(model);
         entity = apiRepository.save(entity);
         return apiMapper.toModel(entity);
     }
 
+    @Override
     public List<ApiOutputModel> getAllApi() {
         return apiRepository.findAll()
                 .stream()
@@ -46,11 +49,13 @@ public class ApiServiceImpl implements ApiService {
                 .toList();
     }
 
+    @Override
     public ApiOutputModel getApiById(String id) {
         Api entity = apiRepository.findById(id).orElseThrow(() -> new RuntimeException("entity not found"));
         return apiMapper.toModel(entity);
     }
 
+    @Override
     public ApiOutputModel updateApi(String id, ApiInputModel model) {
         Api entity = apiRepository.findById(id).orElseThrow(() -> new RuntimeException("entity not found"));
         apiMapper.updateEntity(model, entity);
@@ -58,7 +63,13 @@ public class ApiServiceImpl implements ApiService {
         return apiMapper.toModel(entity);
     }
 
+    @Override
     public List<ApiOutputModel> deleteApiById(String id) {
+
+        if (monzRepository.existsApiInMonzePackageByApiId(new ObjectId(id)).getExists()) {
+            boolean exist = monzRepository.existsApiInMonzePackageByApiId(new ObjectId(id)).getExists();
+            throw new RuntimeException("api already exists in monze package");
+        }
 
         apiRepository.findById(id)
                 .ifPresentOrElse(
@@ -83,6 +94,7 @@ public class ApiServiceImpl implements ApiService {
 
     /*---------------------------------------->>[ApiEndpoint-Services]<<----------------------------------------*/
 
+    @Override
     public List<ApiEndpointOutputModel> insertEndpoint(String apiId, ApiEndpointInputModel apiEndpointInputModel) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
 
@@ -109,12 +121,14 @@ public class ApiServiceImpl implements ApiService {
     }
 
 
+    @Override
     public List<ApiEndpointOutputModel> getAllEndpoints(String ApiId) {
         Api apiEntity = apiRepository.findById(ApiId).orElseThrow(() -> new RuntimeException("entity not found"));
         return apiEndpointMapper.toModel(apiEntity.getEndpoints());
     }
 
 
+    @Override
     public ApiEndpointOutputModel getEndpointById(String ApiId, String apiEndpointId) {
         Api apiEntity = apiRepository.findById(ApiId).orElseThrow(() -> new RuntimeException("entity not found"));
 
@@ -128,6 +142,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
 
+    @Override
     public List<ApiEndpointOutputModel> updateEndpoint(String apiId, String endpointId, ApiEndpointInputModel model) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
         // apiEndpointRepository.findById(endpointId).orElseThrow(() -> new RuntimeException("endpoint not found"));
@@ -149,6 +164,7 @@ public class ApiServiceImpl implements ApiService {
 
     }
 
+    @Override
     public List<ApiEndpointOutputModel> upsertEndpoint(String apiId, ApiEndpointInputModel model) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
 
@@ -175,6 +191,7 @@ public class ApiServiceImpl implements ApiService {
 
     //delete ?
 
+    @Override
     public List<ApiEndpointOutputModel> deleteEndpoint(String apiId, String endpointId) {
         Api apiEntity = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
 
@@ -190,10 +207,12 @@ public class ApiServiceImpl implements ApiService {
 
     /*---------------------------------------->>[ApiEndpointMethod-Services]<<----------------------------------------*/
 
+    @Override
     public List<ApiEndpointMethodOutputModel> insertEndpointMethod(String apiId, String apiEndpointId, ApiEndpointMethodInputModel apiEndpointInputModel) {
         return List.of();
     }
 
+    @Override
     public List<ApiEndpointMethodOutputModel> getAllEndpointMethods(String apiId, String apiEndpointId) {
 //        Api apiEntity = apiRepository.findById(ApiId).orElseThrow(() -> new RuntimeException("entity not found"));
 
@@ -216,6 +235,7 @@ public class ApiServiceImpl implements ApiService {
 
     }
 
+    @Override
     public ApiEndpointMethodOutputModel getEndpointMethodById(String apiId, String apiEndpointId, String apiEndpointMethodId) {
 
 
@@ -250,6 +270,7 @@ public class ApiServiceImpl implements ApiService {
         return apiEndpointMethodMapper.toModel(apiEndpointMethod);
     }
 
+    @Override
     public List<ApiEndpointMethodOutputModel> updateEndpointMethod(String apiId, String apiEndpointId, String apiEndpointMethodId, ApiEndpointMethodInputModel model) {
 
         Api api = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));
@@ -289,10 +310,12 @@ public class ApiServiceImpl implements ApiService {
         return getAllEndpointMethods(apiId, apiEndpointId);
     }
 
+    @Override
     public List<ApiEndpointMethodOutputModel> upsertEndpointMethod(String apiId, String apiEndpointId, ApiEndpointInputModel model) {
         return List.of();
     }
 
+    @Override
     public List<ApiEndpointMethodOutputModel> deleteEndpointMethod(String apiId, String apiEndpointId, String apiEndpointMethodId) {
 
         Api api = apiRepository.findById(apiId).orElseThrow(() -> new RuntimeException("entity not found"));

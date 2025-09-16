@@ -1,15 +1,12 @@
 package com.vasl.samp.dal.entity;
 
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.Id;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 public class ApiEndpoint extends BaseEntity {

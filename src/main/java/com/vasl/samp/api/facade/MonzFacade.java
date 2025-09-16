@@ -5,6 +5,7 @@ import com.vasl.samp.api.dto.*;
 import com.vasl.samp.api.facade.mapper.MonzPackageApiMapper;
 import com.vasl.samp.api.facade.mapper.MonzPackageMapper;
 import com.vasl.samp.api.facade.mapper.MonzPackagePlanMapper;
+import com.vasl.samp.api.facade.mapper.ProviderPackageCountMapper;
 import com.vasl.samp.service.MonzService;
 import com.vasl.samp.service.model.*;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class MonzFacade {
     private final MonzPackageMapper monzPackageMapper;
     private final MonzPackageApiMapper monzPackageApiMapper;
     private final MonzPackagePlanMapper monzPackagePlanMapper;
+    private final ProviderPackageCountMapper providerPackageCountMapper;
 
     /*---------------------------------------->>[MonzPackage-Facade]<<----------------------------------------*/
 
@@ -47,5 +49,10 @@ public class MonzFacade {
         MonzPackagePlanInputModel monzPackagePlanInputModel = monzPackagePlanMapper.toModel(monzPackagePlanInputDto);
         List<MonzPackagePlanOutputModel> monzPackagePlanOutputModel = monzService.addMonzPackagePlan(monzPackageId, monzPackagePlanInputModel);
         return monzPackagePlanMapper.modelToDto(monzPackagePlanOutputModel);
+    }
+
+    public ProviderPackageCountOutputDto ProviderPackageCounter(String username) {
+        ProviderPackageCountOutputModel ProviderPackageCounter = monzService.ProviderPackageCounter(username);
+        return providerPackageCountMapper.modelToDto(ProviderPackageCounter);
     }
 }

@@ -1,20 +1,19 @@
 package com.vasl.samp.service;
 
+import com.vasl.samp.api.dto.ProviderPackageCountOutputDto;
+import com.vasl.samp.api.facade.mapper.ConsumerPackageCountMapper;
 import com.vasl.samp.api.facade.mapper.MonzUserPackageMapper;
-import com.vasl.samp.dal.entity.MonzPackage;
-import com.vasl.samp.dal.entity.MonzPackagePlan;
-import com.vasl.samp.dal.entity.MonzUserPackage;
+import com.vasl.samp.dal.entity.*;
 import com.vasl.samp.dal.repository.MonzRepository;
 import com.vasl.samp.dal.repository.MonzUserPackageRepository;
+import com.vasl.samp.service.model.ConsumerPackageCountOutputModel;
 import com.vasl.samp.service.model.MonzUserPackageOutputModel;
 import com.vasl.samp.service.model.PurchasedInputModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +25,7 @@ public class MonzUserPackageServiceImpl implements MonzUserPackageService {
     private final MonzUserPackageRepository monzUserPackageRepository;
     private final MonzRepository monzRepository;
     private final MonzUserPackageMapper monzUserPackageMapper;
+    private final ConsumerPackageCountMapper consumerPackageCountMapper;
 
     @Override
     public MonzUserPackageOutputModel createMonzUserPackage(PurchasedInputModel purchasedInputModel) {
@@ -72,4 +72,37 @@ public class MonzUserPackageServiceImpl implements MonzUserPackageService {
         MonzUserPackage newMonzUserPackage = monzUserPackageRepository.save(monzUserPackageEntity);
         return monzUserPackageMapper.toModel(newMonzUserPackage);
     }
+
+    @Override
+    public List<findMonzeUserPackagesByNameAndTitleResult> getMonzUserPackages(String name, String title) {
+        return monzUserPackageRepository.findMonzeUserPackagesByNameAndTitle(name, title);
+
+    }
+
+    @Override
+    public ConsumerPackageCountOutputModel consumerPackageCounter(String username) {
+        ConsumerPackageCount entity = monzUserPackageRepository.consumerPackageCounter(username);
+        return consumerPackageCountMapper.entityToModel(entity);
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

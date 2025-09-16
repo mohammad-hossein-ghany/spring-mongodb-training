@@ -7,6 +7,7 @@ import com.vasl.samp.service.model.ApiEndpointMethodInputModel;
 import com.vasl.samp.service.model.ApiEndpointMethodOutputModel;
 import com.vasl.samp.service.model.ApiEndpointOutputModel;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -22,6 +22,11 @@ public class MonzController {
     }
 
 
+    @GetMapping("/provider-package-count")
+    public ProviderPackageCountOutputDto ProviderPackageCounter(@RequestParam String username){
+        return monzFacade.ProviderPackageCounter(username);
+    }
+
 
 
     /*---------------------------------------->>[MonzPackageApi-Controller]<<----------------------------------------*/
@@ -32,7 +37,7 @@ public class MonzController {
     }
 
 
-    /*---------------------------------------->>[MonzPackageApi-Controller]<<----------------------------------------*/
+    /*---------------------------------------->>[MonzPackagePlan-Controller]<<----------------------------------------*/
 
     @PostMapping("/package-plan/insert/{monzPackageId}")
     public List<MonzPackagePlanOutputDto> addMonzPackagePlan( @PathVariable String monzPackageId,@RequestBody MonzPackagePlanInputDto monzPackagePlanInputDto) {
@@ -40,4 +45,25 @@ public class MonzController {
     }
 
 
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

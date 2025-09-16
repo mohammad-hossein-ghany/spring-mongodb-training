@@ -8,6 +8,7 @@ import com.vasl.samp.api.facade.mapper.ApiMapper;
 import com.vasl.samp.service.ApiService;
 import com.vasl.samp.service.model.*;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

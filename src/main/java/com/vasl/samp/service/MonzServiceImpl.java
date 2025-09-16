@@ -1,13 +1,15 @@
 package com.vasl.samp.service;
 
 
-import com.vasl.samp.api.dto.MonzPackagePlanOutputDto;
+import com.vasl.samp.api.dto.ProviderPackageCountOutputDto;
 import com.vasl.samp.api.facade.mapper.MonzPackageApiMapper;
 import com.vasl.samp.api.facade.mapper.MonzPackageMapper;
 import com.vasl.samp.api.facade.mapper.MonzPackagePlanMapper;
+import com.vasl.samp.api.facade.mapper.ProviderPackageCountMapper;
 import com.vasl.samp.dal.entity.MonzPackage;
 import com.vasl.samp.dal.entity.MonzPackageApi;
 import com.vasl.samp.dal.entity.MonzPackagePlan;
+import com.vasl.samp.dal.entity.ProviderPackageCount;
 import com.vasl.samp.dal.repository.MonzRepository;
 import com.vasl.samp.service.model.*;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class MonzServiceImpl implements MonzService {
     private final MonzPackageMapper monzPackageMapper;
     private final MonzPackageApiMapper monzPackageApiMapper;
     private final MonzPackagePlanMapper monzPackagePlanMapper;
+    private final ProviderPackageCountMapper providerPackageCountMapper;
 
 
     /*---------------------------------------->>[MonzPackage-Services]<<----------------------------------------*/
@@ -36,6 +39,11 @@ public class MonzServiceImpl implements MonzService {
         return monzPackageMapper.toModel(entity);
     }
 
+    @Override
+    public ProviderPackageCountOutputModel ProviderPackageCounter(String username) {
+        ProviderPackageCount entity = monzRepository.getProviderPackageCountByUsername(username);
+        return providerPackageCountMapper.entityToModel(entity);
+    }
 
 
     /*---------------------------------------->>[MonzPackageApi-Services]<<----------------------------------------*/
